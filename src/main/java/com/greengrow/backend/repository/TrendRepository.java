@@ -13,9 +13,14 @@ public interface TrendRepository extends JpaRepository<Trend, Long> {
     /**
      * Checks if a trend with the specified name already exists.
      *
-     * @param name The name of the trend.
-     * @return True if a trend with the specified name exists, false otherwise.
+     * @param title The title of the trend.
+     * @param image The image of the trend.
+     * @param date The date of the trend.
+     * @param description The description of the trend.
+     * @param link The name link the trend.
+     *
+     * @return True if a trend with the specified attributes exists, false otherwise.
      */
-    Boolean existsByName(String name);
+    Boolean existsByTitleAndImageAndDateAndDescriptionAndLink(String title,String image,String date,String description,String link);
 }
 
