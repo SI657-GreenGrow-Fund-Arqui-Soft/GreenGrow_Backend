@@ -1,10 +1,13 @@
 package com.greengrow.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * Represents a trend entity in the GreenGrow application.
@@ -29,6 +32,18 @@ public class Trend {
     /**
      * The name of the trend.
      */
-    @Column(name="name", length =150, nullable=false)
-    private String name;
+    @Column(name="title", length =150, nullable = false)
+    private String title;
+
+    @Column(name="image", length =150, nullable = false)
+    private String image;
+
+    @Column(name="date", length =150, nullable = false)
+    private String date;
+
+    @Column(name="description", length =550, nullable = false)
+    private String description;
+
+    @Column(name="link", length =150, nullable = false)
+    private String link;
 }
