@@ -1,7 +1,7 @@
 package com.greengrow.backend.controller;
 
-import com.greengrow.backend.repository.CourseRepository;
-import com.greengrow.backend.model.Course;
+import com.greengrow.backend.domain.persistence.CourseRepository;
+import com.greengrow.backend.domain.model.entity.Course;
 import com.greengrow.backend.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

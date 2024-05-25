@@ -1,7 +1,7 @@
 package com.greengrow.backend.controller;
 
-import com.greengrow.backend.model.Article;
-import com.greengrow.backend.repository.ArticleRepository;
+import com.greengrow.backend.domain.model.entity.Article;
+import com.greengrow.backend.domain.persistence.ArticleRepository;
 import com.greengrow.backend.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

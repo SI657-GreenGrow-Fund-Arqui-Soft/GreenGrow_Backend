@@ -1,6 +1,6 @@
 package com.greengrow.backend.service;
 
-import com.greengrow.backend.model.Article;
+import com.greengrow.backend.domain.model.entity.Article;
 
 /**
  * Service interface for managing Article entities in the GreenGrow application.

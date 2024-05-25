@@ -1,6 +1,6 @@
 package com.greengrow.backend.service;
 
-import com.greengrow.backend.model.Trend;
+import com.greengrow.backend.domain.model.entity.Trend;
 
 /**
  * Service interface for managing Trend entities in the GreenGrow application.

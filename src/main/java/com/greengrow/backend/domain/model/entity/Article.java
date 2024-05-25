@@ -1,4 +1,4 @@
-package com.greengrow.backend.model;
+package com.greengrow.backend.domain.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

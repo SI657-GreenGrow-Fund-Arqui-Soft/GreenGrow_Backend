@@ -1,6 +1,6 @@
-package com.greengrow.backend.repository;
+package com.greengrow.backend.domain.persistence;
 
-import com.greengrow.backend.model.Course;
+import com.greengrow.backend.domain.model.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

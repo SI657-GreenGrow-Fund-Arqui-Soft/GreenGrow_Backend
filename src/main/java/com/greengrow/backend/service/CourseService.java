@@ -1,6 +1,6 @@
 package com.greengrow.backend.service;
 
-import com.greengrow.backend.model.Course;
+import com.greengrow.backend.domain.model.entity.Course;
 
 /**
  * Service interface for managing Course entities in the GreenGrow application.

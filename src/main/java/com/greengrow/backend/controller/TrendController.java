@@ -1,8 +1,7 @@
 package com.greengrow.backend.controller;
 
-import com.greengrow.backend.model.Article;
-import com.greengrow.backend.repository.TrendRepository;
-import com.greengrow.backend.model.Trend;
+import com.greengrow.backend.domain.persistence.TrendRepository;
+import com.greengrow.backend.domain.model.entity.Trend;
 import com.greengrow.backend.service.TrendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,13 +1,10 @@
-package com.greengrow.backend.model;
+package com.greengrow.backend.domain.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * Represents a trend entity in the GreenGrow application.

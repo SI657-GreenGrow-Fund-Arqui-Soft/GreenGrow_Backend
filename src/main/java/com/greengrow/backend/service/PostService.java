@@ -1,6 +1,6 @@
 package com.greengrow.backend.service;
 
-import com.greengrow.backend.model.Post;
+import com.greengrow.backend.domain.model.entity.Post;
 
 /**
  * Service interface for managing Post entities in the GreenGrow application.

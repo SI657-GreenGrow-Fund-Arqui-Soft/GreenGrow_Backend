@@ -1,7 +1,7 @@
 package com.greengrow.backend.service.impl;
 
-import com.greengrow.backend.model.Trend;
-import com.greengrow.backend.repository.TrendRepository;
+import com.greengrow.backend.domain.model.entity.Trend;
+import com.greengrow.backend.domain.persistence.TrendRepository;
 import com.greengrow.backend.service.TrendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
