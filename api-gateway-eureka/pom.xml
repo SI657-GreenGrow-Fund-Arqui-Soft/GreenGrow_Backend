@@ -40,5 +40,9 @@
             <version>5.0.0</version> <!-- Asegúrate de usar una versión compatible con tu configuración -->
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
     </dependencies>
 </project>
