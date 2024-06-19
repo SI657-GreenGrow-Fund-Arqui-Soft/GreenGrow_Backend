@@ -1,5 +1,6 @@
 package com.greengrow.backend.apigateway.handlers;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
@@ -7,30 +8,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
+@CircuitBreaker(name = "exterior", fallbackMethod = "fallback")
 @Component
-public class CircuitBreakerHandler implements FallbackHandler {
+public class LoadBalancerHandler implements FallbackHandler {
     private final DiscoveryClient discoveryClient;
     private final LoadBalancerClient loadBalancerClient;
 
-    public CircuitBreakerHandler(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+    public LoadBalancerHandler(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
         this.discoveryClient = discoveryClient;
         this.loadBalancerClient = loadBalancerClient;
     }
 
-    public ServerResponse handler(String routeId, ServerRequest request) {
+    public ServerResponse handler(String routeId, String url, ServerRequest request) {
         try {
-            //List<ServiceInstance> instances = discoveryClient.getInstances(routeId);
-            //ServiceInstance instance = instances.get(0);
-            //String url = instance.getUri().toString();
             String instanceUrl = loadBalancerClient.choose(routeId).getUri().toString();
             return HandlerFunctions.http(instanceUrl).handle(request);
         } catch(Exception e) {
-            return fallback(request, e);
+            return fallback(request, url, e);
         }
     }
 
     @Override
-    public ServerResponse fallback(ServerRequest request, Exception e) {
-        return defaultFallback(request, e);
+    public ServerResponse fallback(ServerRequest request, String url, Exception e) {
+        return defaultFallback(request, url, e);
     }
 }

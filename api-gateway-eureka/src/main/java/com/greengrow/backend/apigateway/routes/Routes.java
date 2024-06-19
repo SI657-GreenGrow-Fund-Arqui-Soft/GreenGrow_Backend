@@ -1,6 +1,7 @@
 package com.greengrow.backend.apigateway.routes;
 
-import com.greengrow.backend.apigateway.handlers.CircuitBreakerHandler;
+import com.greengrow.backend.apigateway.handlers.LoadBalancerHandler;
+import org.apache.catalina.Server;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
@@ -12,27 +13,28 @@ import org.springframework.web.servlet.function.ServerResponse;
 @Configuration
 public class Routes {
 
-    private final CircuitBreakerHandler circuitBreakerHandler;
+    private final LoadBalancerHandler loadBalancerHandler;
 
-    public Routes(CircuitBreakerHandler circuitBreakerHandler) {
-        this.circuitBreakerHandler = circuitBreakerHandler;
+    public Routes(LoadBalancerHandler loadBalancerHandler) {
+        this.loadBalancerHandler = loadBalancerHandler;
     }
 
     @Bean
     public RouterFunction<ServerResponse> articlesServiceRoute() {
         String routeId = "articles-service";
+        String fallbackUrl = "/articlesFallback";
         return GatewayRouterFunctions.route(routeId)
                 .route(RequestPredicates.path("/api/green-grow/v1/articles"),
-                        request -> circuitBreakerHandler.handler(routeId, request))
+                        request -> loadBalancerHandler.handler(routeId, fallbackUrl, request))
                 .build();
     }
 
     @Bean
     public RouterFunction<ServerResponse> coursesServiceRoute() {
-        return generalGreenGrowRoute(
+        return loadBalancedGreenGrowRoute(
                 "courses-service",
-                "course",
-                "http://localhost:8081"
+                "courses",
+                "/coursesFallback"
         );
     }
 
@@ -63,13 +65,25 @@ public class Routes {
         );
     }
 
-    static private RouterFunction<ServerResponse> generalGreenGrowRoute(
+    private RouterFunction<ServerResponse> generalGreenGrowRoute(
             String routeId, String path, String url
     ) {
         String basePath = "/api/green-grow/v1/";
         return GatewayRouterFunctions.route(routeId)
                 .route(RequestPredicates.path(basePath + path)
                         , HandlerFunctions.http(url))
+                .build();
+    }
+
+    private RouterFunction<ServerResponse> loadBalancedGreenGrowRoute(
+            String routeId,
+            String path,
+            String fallbackUrl
+    ) {
+        String basePath = "/api/green-grow/v1/";
+        return GatewayRouterFunctions.route(routeId)
+                .route(RequestPredicates.path(basePath + path),
+                        request -> loadBalancerHandler.handler(routeId, fallbackUrl, request))
                 .build();
     }
 }

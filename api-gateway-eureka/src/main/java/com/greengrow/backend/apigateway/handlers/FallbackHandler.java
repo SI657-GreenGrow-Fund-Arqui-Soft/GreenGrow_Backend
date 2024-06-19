@@ -7,11 +7,11 @@ import org.springframework.web.servlet.function.ServerResponse;
 @FunctionalInterface
 public interface FallbackHandler {
 
-    ServerResponse fallback(ServerRequest request, Exception e);
+    ServerResponse fallback(ServerRequest request, String url, Exception e);
 
-    default ServerResponse defaultFallback(ServerRequest request, Exception e) {
+    default ServerResponse defaultFallback(ServerRequest request, String url, Exception e) {
         try {
-            return HandlerFunctions.forward("/articlesFallback").handle(request);
+            return HandlerFunctions.forward(url).handle(request);
         } catch (Exception ex){
             ex.printStackTrace();
             return null;
