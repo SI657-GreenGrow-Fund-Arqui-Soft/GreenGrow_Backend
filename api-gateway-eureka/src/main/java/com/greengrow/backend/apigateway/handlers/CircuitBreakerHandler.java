@@ -1,7 +1,5 @@
 package com.greengrow.backend.apigateway.handlers;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
@@ -9,9 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
-import java.util.List;
-
-@CircuitBreaker(name = "external", fallbackMethod = "fallback")
 @Component
 public class CircuitBreakerHandler implements FallbackHandler {
     private final DiscoveryClient discoveryClient;
