@@ -1,8 +1,6 @@
 package com.greengrow.backend.apigateway.routes;
 
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
-import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
-import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import com.greengrow.backend.apigateway.handlers.CircuitBreakerHandler;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
@@ -11,42 +9,23 @@ import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
 
-import java.time.Duration;
-import java.util.concurrent.Callable;
-
 @Configuration
 public class Routes {
 
-    @Bean
-    public RouterFunction<ServerResponse> articlesServiceRoute() {
-        CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
-                .failureRateThreshold(50)
-                .waitDurationInOpenState(Duration.ofSeconds(10))
-                .slidingWindowSize(10)
-                .build();
+    private final CircuitBreakerHandler circuitBreakerHandler;
 
-        CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(circuitBreakerConfig);
-        CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("Circuit_Breaker");
-        return GatewayRouterFunctions.route("articles-service")
-                .route(RequestPredicates.path("/api/green-grow/v1/articles/**"),
-                        request -> {
-                            Callable<ServerResponse> responseCallable = circuitBreaker.decorateCallable(() -> {
-                                try {
-                                    return HandlerFunctions.http("lb://articles-service")
-                                            .handle(request);
-                                } catch (Exception e) {
-                                    return ServerResponse.status(500).body(e.getMessage());
-                                }
-                            });
-                            try {
-                                return responseCallable.call();
-                            } catch (Exception e) {
-                                return HandlerFunctions.forward("/articlesFallback").handle(request);
-                            }
-                        })
-                .build();
+    public Routes(CircuitBreakerHandler circuitBreakerHandler) {
+        this.circuitBreakerHandler = circuitBreakerHandler;
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> articlesServiceRoute() {
+        String routeId = "articles-service";
+        return GatewayRouterFunctions.route(routeId)
+                .route(RequestPredicates.path("/api/green-grow/v1/articles"),
+                        request -> circuitBreakerHandler.handler(routeId, request))
+                .build();
+    }
 
     @Bean
     public RouterFunction<ServerResponse> coursesServiceRoute() {
