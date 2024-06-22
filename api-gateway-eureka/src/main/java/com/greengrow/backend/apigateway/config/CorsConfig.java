@@ -1,4 +1,4 @@
-package com.greengrow.backend.config;
+package com.greengrow.backend.apigateway.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
