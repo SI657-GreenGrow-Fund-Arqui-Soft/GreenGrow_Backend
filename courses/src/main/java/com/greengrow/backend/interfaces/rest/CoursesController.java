@@ -1,14 +1,20 @@
-package com.greengrow.backend.controller;
+package com.greengrow.backend.interfaces.rest;
 
 import com.greengrow.backend.domain.model.entity.Course;
-import com.greengrow.backend.domain.persistence.CourseRepository;
-import com.greengrow.backend.service.CourseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.greengrow.backend.domain.model.queries.GetAllCoursesQuery;
+import com.greengrow.backend.domain.model.queries.GetCourseByIdQuery;
+import com.greengrow.backend.domain.services.CourseQueryService;
+import com.greengrow.backend.domain.services.CourseCommandService;
+import com.greengrow.backend.interfaces.rest.dto.CourseDTO;
+import com.greengrow.backend.interfaces.rest.dto.CreateCourseDTO;
+import com.greengrow.backend.interfaces.rest.transform.CourseDTOFromEntityAssembler;
+import com.greengrow.backend.interfaces.rest.transform.CreateCourseCommandFromDTOAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Controller class for handling RESTful requests for courses.
@@ -18,18 +24,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/green-grow/v1")
 public class CoursesController {
-    @Autowired
-    private CourseService courseService;
 
-    private final CourseRepository courseRepository;
+    private final CourseCommandService courseCommandService;
+    private final CourseQueryService courseQueryService;
+
+    public CoursesController(CourseCommandService courseCommandService, CourseQueryService courseQueryService) {
+        this.courseCommandService = courseCommandService;
+        this.courseQueryService = courseQueryService;
+    }
 
     /**
      * Constructor for CourseController.
      * @param courseRepository The repository object used for accessing courses.
      */
-    public CoursesController(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
 
     //URL: http://localhost:8080/api/green-grow/v1/courses
     //Method: GET
@@ -38,13 +45,21 @@ public class CoursesController {
      * @return ResponseEntity with the list of all courses and the HTTP status code.
      */
     @GetMapping("/courses")
-    public ResponseEntity<List<Course>> getAllCourses() {
-        return new ResponseEntity<List<Course>>(courseRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+        var getAllCoursesCommand = new GetAllCoursesQuery();
+        var courses = courseQueryService.handle(getAllCoursesCommand);
+        List<CourseDTO> courseDTOList = courses
+                .stream()
+                .flatMap(optional -> optional.map(Stream::of).orElseGet(Stream::empty))
+                .map(CourseDTOFromEntityAssembler::toDTOFromEntity)
+                .toList();
+        return new ResponseEntity<List<CourseDTO>>(courseDTOList, HttpStatus.OK);
     }
 
     //GetById
     //URL: http://localhost:8080/api/green-grow/v1/courses/{id}
     //Method: GET
+
 
     /**
      * Method for handling GET requests for a course by id.
@@ -52,26 +67,26 @@ public class CoursesController {
      * @return ResponseEntity with the course and the HTTP status code.
      */
     @GetMapping("/courses/{id}")
-    public ResponseEntity<Course> getCourseById(Long id) {
-        return new ResponseEntity<Course>(courseRepository.findById(id).get(), HttpStatus.OK);
+    public ResponseEntity<CourseDTO> getCourseById(Long id) {
+        var getCourseByIdCommand = new GetCourseByIdQuery(id);
+        var course = courseQueryService.handle(getCourseByIdCommand);
+        var courseDTO = CourseDTOFromEntityAssembler.toDTOFromEntity(course.get());
+        return new ResponseEntity<CourseDTO>(courseDTO, HttpStatus.OK);
     }
 
     //URL: http://localhost:8080/api/green-grow/v1/courses
     //Method: POST
     /**
      * Method for handling POST requests for creating a new course.
-     * @param course The course object to be created.
+     * @param courseDTO The course object to be created.
      * @return ResponseEntity with the created course and the HTTP status code.
      */
     @PostMapping("/courses")
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        try {
-            validateCourse(course);
-            //existsByNameAndPrice(course);
-            return new ResponseEntity<Course>(courseService.createCourse(course), HttpStatus.CREATED);
-        }catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<CourseDTO> createCourse(@RequestBody CreateCourseDTO courseDTO) {
+        var createCourseCommand = CreateCourseCommandFromDTOAssembler.toCommandFromDTO(courseDTO);
+        var course = courseCommandService.handle(createCourseCommand);
+        var response = CourseDTOFromEntityAssembler.toDTOFromEntity(course.get());
+        return new ResponseEntity<CourseDTO>(response, HttpStatus.CREATED);
     }
 
     /**

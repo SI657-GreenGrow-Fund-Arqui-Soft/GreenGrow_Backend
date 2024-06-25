@@ -2,7 +2,9 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/api-gateway-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/article2s/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/articles/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/articles2/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/courses/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discovery-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/posts/src/main/java" charset="UTF-8" />

@@ -40,28 +40,28 @@ public class Routes {
 
     @Bean
     public RouterFunction<ServerResponse> postsServiceRoute() {
-        return generalGreenGrowRoute(
+        return loadBalancedGreenGrowRoute(
                 "posts-service",
                 "posts",
-                "http://localhost:8082"
+                "/postsFallback"
         );
     }
 
     @Bean
     public RouterFunction<ServerResponse> profilesServiceRoute() {
-        return generalGreenGrowRoute(
+        return loadBalancedGreenGrowRoute(
                 "profiles-service",
                 "profile",
-                "http://localhost:8083"
+                "/profilesFallback"
         );
     }
 
     @Bean
     public RouterFunction<ServerResponse> trendsServiceRoute() {
-        return generalGreenGrowRoute(
+        return loadBalancedGreenGrowRoute(
                 "trends-service",
                 "trends",
-                "http://localhost:8084"
+                "/trendsFallback"
         );
     }
 

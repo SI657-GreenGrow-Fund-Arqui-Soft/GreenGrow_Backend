@@ -11,11 +11,9 @@ import org.springframework.web.servlet.function.ServerResponse;
 @CircuitBreaker(name = "exterior", fallbackMethod = "fallback")
 @Component
 public class LoadBalancerHandler implements FallbackHandler {
-    private final DiscoveryClient discoveryClient;
     private final LoadBalancerClient loadBalancerClient;
 
-    public LoadBalancerHandler(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-        this.discoveryClient = discoveryClient;
+    public LoadBalancerHandler(LoadBalancerClient loadBalancerClient) {
         this.loadBalancerClient = loadBalancerClient;
     }
 

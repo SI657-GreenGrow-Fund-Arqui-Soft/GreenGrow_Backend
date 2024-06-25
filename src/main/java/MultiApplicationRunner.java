@@ -10,12 +10,13 @@ public class MultiApplicationRunner {
     public static void main(String[] args) {
         System.out.println("Directorio de trabajo actual: " + System.getProperty("user.dir"));
 
-        int[] ports = {8761, 8000, 8080, 8081, 8082, 8083, 8084};
+        int[] ports = {8761, 8000, 8080, 8081, 8082, 8083, 8084, 8085};
         cleanPorts(ports);
 
         List<String[]> commands = new ArrayList<>();
         commands.add(new String[]{"java", "-jar", "api-gateway-eureka/target/api-gateway-eureka-1.0-SNAPSHOT.jar"});
         commands.add(new String[]{"java", "-jar", "articles/target/articles-1.0-SNAPSHOT.jar"});
+        commands.add(new String[]{"java", "-jar", "article2s/target/article2s-1.0-SNAPSHOT.jar"});
         commands.add(new String[]{"java", "-jar", "courses/target/courses-1.0-SNAPSHOT.jar"});
         commands.add(new String[]{"java", "-jar", "posts/target/posts-1.0-SNAPSHOT.jar"});
         commands.add(new String[]{"java", "-jar", "profiles/target/profiles-1.0-SNAPSHOT.jar"});

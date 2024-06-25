@@ -5,19 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.AbstractAggregateRoot;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Represents a course entity in the GreenGrow application.
  * @author GrowGenius
  * @version 1.0 19/11/2023
  */
+@EntityListeners(AuditingEntityListener.class)
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "courses")
-public class Course {
+public class Course extends AbstractAggregateRoot<Course> {
 
     /**
      * The unique identifier for the course.
@@ -26,6 +27,8 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="user_id", nullable = false)
+    private String user_id;
     /**
      * The name of the course.
      */
@@ -73,4 +76,16 @@ public class Course {
      */
     @Column(name="date", length =30, nullable=false)
     private String date;
+
+    public Course(String user_id, String name, String image, String description, String price, String rating, String duration, String category, String date) {
+        this.user_id = user_id;
+        this.name = name;
+        this.image = image;
+        this.description = description;
+        this.price = price;
+        this.rating = rating;
+        this.duration = duration;
+        this.category = category;
+        this.date = date;
+    }
 }
