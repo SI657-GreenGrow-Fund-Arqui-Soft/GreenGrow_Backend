@@ -91,10 +91,21 @@ Para levantar toda la infraestructura de microservicios y RabbitMQ utilizando Do
 2. Navega al directorio raíz de tu proyecto donde se encuentra el archivo docker-compose.yml. 
 3. Ejecuta el siguiente comando para construir y levantar todos los servicios:
 
+:warning: **Aviso**: Ejecuta cada comando en orden
 ```bash
-docker-compose up --build
+docker-compose build
 ```
-Este comando construirá las imágenes de Docker para cada uno de los microservicios definidos en tu archivo docker-compose.yml y levantará todos los contenedores necesarios, incluyendo el Eureka Server y RabbitMQ.
+Este comando construirá las imágenes de Docker para cada uno de los microservicios definidos en tu archivo docker-compose.yml 
+
+```bash
+docker-compose up -d
+```
+Este comando levantará todos los contenedores necesarios, incluyendo el Eureka Server y RabbitMQ.
+
+```bash
+docker-compose up --scale courses-service=3 -d
+```
+Este comando creara 3 instancias del servicio nombrado en cuestion
 
 ## Detener docker
 ```bash

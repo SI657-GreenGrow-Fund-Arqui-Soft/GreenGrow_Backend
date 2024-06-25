@@ -98,9 +98,6 @@ services:
   courses-service:
     build:
       context: ./courses
-    container_name: courses-service
-    ports:
-      - "8081:8081"
     networks:
       - microservices-network
     depends_on:
@@ -110,15 +107,11 @@ services:
       - spring.rabbitmq.host=rabbitmq
       - spring.rabbitmq.port=5672
       - spring.application.name=courses-service
-      - server.port=8081
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
 
   profiles-service:
     build:
       context: ./profiles
-    container_name: profiles-service
-    ports:
-      - "8083:8083"
     networks:
       - microservices-network
     depends_on:
@@ -128,7 +121,6 @@ services:
       - spring.rabbitmq.host=rabbitmq
       - spring.rabbitmq.port=5672
       - spring.application.name=profiles-service
-      - server.port=8083
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
 
 networks:
