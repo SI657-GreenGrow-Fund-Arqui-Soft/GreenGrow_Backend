@@ -36,4 +36,17 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", cellNumber='" + cellNumber + '\'' +
+                ", image='" + image + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

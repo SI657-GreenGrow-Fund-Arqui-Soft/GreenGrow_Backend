@@ -1,4 +1,4 @@
-package com.greengrow.backend.shared.mapping;
+package com.greengrow.backend.mapping;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

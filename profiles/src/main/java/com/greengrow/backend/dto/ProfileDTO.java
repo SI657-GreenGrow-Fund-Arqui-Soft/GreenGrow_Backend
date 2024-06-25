@@ -5,21 +5,29 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 
-@Data
-@Getter
-@Setter
+import java.io.Serializable;
+
+
 @With
-@AllArgsConstructor
-@NoArgsConstructor
-public class ProfileDTO {
+public record ProfileDTO (
+        String firstName,
+        String lastName,
+        String email,
+        String cellNumber,
+        String image,
+        Role role
+) implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String cellNumber;
-    private String image;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
+    @Override
+    public String toString() {
+        return "ExternalUser{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", cellNumber='" + cellNumber + '\'' +
+                ", image='" + image + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

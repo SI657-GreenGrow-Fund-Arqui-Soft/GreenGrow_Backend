@@ -71,8 +71,7 @@ mvn clean
 Después de limpiar el proyecto, compila el código y empaqueta los artefactos necesarios. Esto compilará el código fuente y empaquetará los resultados en archivos .jar para cada microservicio:
 
 ```bash
-mvn install
-mvn package
+mvn install package
 ```
 
 - `mvn install` instala los paquetes necesarios y compila el proyecto.
@@ -86,14 +85,34 @@ Una vez que el proyecto está construido y los archivos JAR están listos, puede
 java src/main/java/MultiApplicationRunner.java
 ```
 
-## Acceso a los Microservicios
+## Tambien puede levantar la infrastructura en DOCKER
+Para levantar toda la infraestructura de microservicios y RabbitMQ utilizando Docker Compose, sigue estos pasos:
+1. Asegúrate de que tienes Docker y Docker Compose instalados. 
+2. Navega al directorio raíz de tu proyecto donde se encuentra el archivo docker-compose.yml. 
+3. Ejecuta el siguiente comando para construir y levantar todos los servicios:
+
+```bash
+docker-compose up --build
+```
+Este comando construirá las imágenes de Docker para cada uno de los microservicios definidos en tu archivo docker-compose.yml y levantará todos los contenedores necesarios, incluyendo el Eureka Server y RabbitMQ.
+
+## Detener docker
+```bash
+docker-compose down
+```
+
+## Estado de los servicios
+
+- Api Gateway: http://localhost:8000/{endpoint}
+- Eureka Dashboard: http://localhost:8761/
+- Rabbitmq Dashboard: http://localhost:15672/
+
+## Acceso a los componentes del Sistema
 
 Una vez que todos los microservicios estén en ejecución, podrás acceder a ellos a través de:
-
-- Eureka Dashboard: http://localhost:8761/
-- Api Gateway: http://localhost:8000/{endpoint}
 - Articles Microservice: http://localhost:8080/swagger-ui/index.html#/
 - Courses Microservice: http://localhost:8081/swagger-ui/index.html#/
 - Posts Microservice: http://localhost:8082/swagger-ui/index.html#/
 - Profiles Microservice: http://localhost:8083/swagger-ui/index.html#/
 - Trends Microservice: http://localhost:8084/swagger-ui/index.html#/
+

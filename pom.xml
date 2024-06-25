@@ -22,6 +22,7 @@
         <module>trends</module>
         <module>discovery-server</module>
         <module>api-gateway-eureka</module>
+        <module>article2s</module>
     </modules>
 
     <properties>
