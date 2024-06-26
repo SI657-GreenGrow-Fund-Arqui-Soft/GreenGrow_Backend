@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -10,6 +10,7 @@ services:
       - microservices-network
 
   discovery-server:
+    image: caszarjos/discovery-server
     build:
       context: ./discovery-server
     container_name: discovery-server
@@ -21,6 +22,7 @@ services:
       - eureka.instance.hostname=discovery-server
 
   api-gateway:
+    image: caszarjos/api-gateway
     build:
       context: ./api-gateway-eureka
     container_name: api-gateway
@@ -39,11 +41,9 @@ services:
       - logging.level.org.springframework.cloud.gateway=TRACE
 
   trends-service:
+    image: caszarjos/trends-service
     build:
       context: ./trends
-    container_name: trends-service
-    ports:
-      - "8084:8084"
     networks:
       - microservices-network
     depends_on:
@@ -54,15 +54,12 @@ services:
       - spring.datasource.username=root
       - spring.datasource.password=%aO|cS{Z(&doRJx#
       - spring.jpa.hibernate.ddl-auto=update
-      - server.port=8084
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
 
   posts-service:
+    image: caszarjos/posts-service
     build:
       context: ./posts
-    container_name: posts-service
-    ports:
-      - "8082:8082"
     networks:
       - microservices-network
     depends_on:
@@ -73,15 +70,12 @@ services:
       - spring.datasource.username=root
       - spring.datasource.password=%aO|cS{Z(&doRJx#
       - spring.jpa.hibernate.ddl-auto=update
-      - server.port=8082
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
 
   articles-service:
+    image: caszarjos/articles-service
     build:
       context: ./articles
-    container_name: articles-service
-    ports:
-      - "8080:8080"
     networks:
       - microservices-network
     depends_on:
@@ -92,10 +86,10 @@ services:
       - spring.datasource.username=root
       - spring.datasource.password=%aO|cS{Z(&doRJx#
       - spring.jpa.hibernate.ddl-auto=update
-      - server.port=8080
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
 
   courses-service:
+    image: caszarjos/courses-service
     build:
       context: ./courses
     networks:
@@ -110,6 +104,7 @@ services:
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
 
   profiles-service:
+    image: caszarjos/profiles-service
     build:
       context: ./profiles
     networks:
