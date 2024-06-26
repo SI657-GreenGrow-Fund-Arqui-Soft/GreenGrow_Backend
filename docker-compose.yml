@@ -55,6 +55,8 @@ services:
       - spring.datasource.password=%aO|cS{Z(&doRJx#
       - spring.jpa.hibernate.ddl-auto=update
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    deploy:
+      replicas: 2
 
   posts-service:
     image: caszarjos/posts-service
@@ -71,6 +73,8 @@ services:
       - spring.datasource.password=%aO|cS{Z(&doRJx#
       - spring.jpa.hibernate.ddl-auto=update
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    deploy:
+      replicas: 2
 
   articles-service:
     image: caszarjos/articles-service
@@ -87,6 +91,8 @@ services:
       - spring.datasource.password=%aO|cS{Z(&doRJx#
       - spring.jpa.hibernate.ddl-auto=update
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    deploy:
+      replicas: 2
 
   courses-service:
     image: caszarjos/courses-service
@@ -102,6 +108,8 @@ services:
       - spring.rabbitmq.port=5672
       - spring.application.name=courses-service
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    deploy:
+      replicas: 2
 
   profiles-service:
     image: caszarjos/profiles-service
@@ -117,6 +125,8 @@ services:
       - spring.rabbitmq.port=5672
       - spring.application.name=profiles-service
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    deploy:
+      replicas: 2
 
 networks:
   microservices-network:
